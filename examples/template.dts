@@ -1,0 +1,30 @@
+/dts-v1/;
+
+/ {
+	#address-cells = <0x2>;
+	#size-cells = <0x2>;
+
+	gic {
+		#interrupt-cells = <0x3>;
+		interrupt-controller;
+		phandle = <0x1>;
+	};
+
+	passthrough {
+		compatible = "simple-bus";
+		ranges;
+		#address-cells = <0x2>;
+		#size-cells = <0x2>;
+
+		sample_clk: sample_clk {
+			#clock-cells = <0x0>;
+			clock-frequency = <0xFFFFFFFF>;
+			compatible = "fixed-clock";
+		};
+
+		ethernet@4033c000 {
+			clocks = <&sample_clk &sample_clk &sample_clk &sample_clk &sample_clk &sample_clk &sample_clk &sample_clk &sample_clk &sample_clk>;
+			clock-names = "stmmaceth", "pclk", "tx_sgmii", "tx_rgmii", "tx_rmii", "tx_mii", "rx_sgmii", "rx_rgmii", "rx_rmii", "rx_mii";
+		};
+	};
+};
