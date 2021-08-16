@@ -60,6 +60,14 @@ def page_round_up(num: int):
     """
     return (num + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1)
 
+def page_round_down(num: int):
+    """
+    Rounds down the provided int number to the next PAGE_SIZE multiple.
+
+    :param num: Provided int number to align down to PAGE_SIZE
+    """
+    return num & ~(PAGE_SIZE - 1)
+
 def parse_memory_region_prop(target_node, reg):
     """
     Parses "memory-region" property of a node, finds and returns
@@ -140,6 +148,9 @@ def convert_to_xen_reg_prop(reg, address_cells, size_cells):
     while idx < len(reg):
         # Get '#address-cells' values, add them to xen_reg list
         address_cells_list = reg[idx:idx+address_cells]
+        for i, val in enumerate(address_cells_list):
+            address_cells_list[i] = page_round_down(val)
+
         xen_reg.extend(address_cells_list)
         idx += address_cells
 
@@ -263,7 +274,7 @@ def main():
     for prop in target_node.props:
         if re.search(pattern, prop.name):
             found_props.append(prop.name)
-    
+
     for prop in found_props:
         target_node.remove_property(prop)
 
