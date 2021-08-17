@@ -29,9 +29,9 @@ import argparse
 import re
 import sys
 
-# Check for Python >= 3.6
-if sys.version_info.major < 3 or sys.version_info.minor < 6:
-    raise Exception("Python version should be at least 3.6")
+# Check for Python >= 3.5
+if sys.version_info.major < 3 or sys.version_info.minor < 5:
+    raise Exception("Python version should be at least 3.5")
 
 try:
     from pip import main as pipmain
